@@ -1,69 +1,47 @@
 <template>
   <div class="notes">
-    <div class="card has-background-success-dark p-4 mb-5">
-      <div class="field">
-        <div class="control">
-          <textarea
-            class="textarea"
-            v-model="newNote.content"
-            placeholder="Add a new note"
-            ref="newNoteRef"
-          ></textarea>
-        </div>
-      </div>
-
-      <div class="field is-grouped is-grouped-right">
-        <div class="control">
-          <button
-            class="button is-link has-background-success"
-            @click="addNote"
-            :disabled="!newNote.content"
-          >
-            Add New Note
-          </button>
-        </div>
-      </div>
-    </div>
-    <div v-for="note in notes" class="card mb-4">
-      <div class="card-content">
-        <div class="content">
-          {{ note.content }}
-        </div>
-      </div>
-      <footer class="card-footer">
-        <a href="#" class="card-footer-item">Edit</a>
-        <a href="#" class="card-footer-item">Delete</a>
-      </footer>
-    </div>
+    <AddEditNote
+      v-model="newNote.content"
+      ref="addEditNoteRef"
+      placeholder="Add a new note"
+    >
+      <template v-slot:buttons>
+        <button
+          @click="addNote"
+          :disabled="!newNote.content"
+          class="button is-link has-background-success"
+        >
+          Add New Note
+        </button>
+      </template>
+    </AddEditNote>
+    <Note
+      v-for="note in store.notes"
+      :key="note.id"
+      :note="note"
+      @deleteClicked="deleteNote"
+    />
   </div>
 </template>
 
 <script setup>
+import AddEditNote from "@/components/notes/AddEditNote.vue";
+import Note from "@/components/notes/Note.vue";
+
 import { ref, reactive } from "vue";
-import { v4 as uuidv4 } from "uuid";
+import { useStoreNotes } from "@/stores/storeNotes";
 
-const notes = reactive([
-  {
-    id: uuidv4(),
-    content:
-      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Numquam",
-  },
-  {
-    id: uuidv4(),
-    content: "This is a shorter note!",
-  },
-]);
-
-const newNote = reactive({});
-const newNoteRef = ref(null);
+const store = useStoreNotes();
+const newNote = reactive({ content: "" });
+const addEditNoteRef = ref(null);
 
 const addNote = () => {
-  notes.unshift({
-    id: uuidv4(),
-    content: newNote.content,
-  });
-
+  store.addNote(newNote);
   newNote.content = "";
-  newNoteRef.value.focus();
+  addEditNoteRef.value.focusTextarea();
+};
+
+const deleteNote = (id) => {
+  store.deleteNote(id);
 };
 </script>
