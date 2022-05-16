@@ -24,6 +24,10 @@ export const useStoreNotes = defineStore("storeNotes", {
         content: newNote.content,
       });
     },
+    updateNote(payload) {
+      const index = this.notes.findIndex((note) => note.id === payload.id);
+      this.notes[index] = payload;
+    },
     deleteNote(id) {
       const index = this.notes.findIndex((note) => note.id === id);
       this.notes.splice(index, 1);
@@ -31,6 +35,19 @@ export const useStoreNotes = defineStore("storeNotes", {
     getNote(id) {
       const index = this.notes.findIndex((note) => note.id === id);
       return this.notes[index];
+    },
+  },
+  getters: {
+    totalNotesCount(state) {
+      return state.notes.length;
+    },
+    totalCharactersCount(state) {
+      const result = state.notes.reduce(
+        (acc, note) => acc + note.content.length,
+        0
+      );
+
+      return result;
     },
   },
 });

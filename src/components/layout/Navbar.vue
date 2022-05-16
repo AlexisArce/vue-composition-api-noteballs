@@ -53,16 +53,7 @@ import Navbar from "@/components/layout/Navbar.vue";
 const showMobileNav = ref(false);
 
 const hideMobileNav = () => {
-  const navbarMenu = document.getElementsByClassName("navbar-menu")[0];
-  /*
-  if (showMobileNav.value) {
-    navbarMenu.style.display = "none";
-    showMobileNav.value = false;
-  } else {
-    navbarMenu.style.display = "block";
-    showMobileNav.value = true;
-  }
-  */
+  showMobileNav.value = false;
 };
 </script>
 
