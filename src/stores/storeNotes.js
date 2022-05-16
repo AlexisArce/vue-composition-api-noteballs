@@ -28,5 +28,9 @@ export const useStoreNotes = defineStore("storeNotes", {
       const index = this.notes.findIndex((note) => note.id === id);
       this.notes.splice(index, 1);
     },
+    getNote(id) {
+      const index = this.notes.findIndex((note) => note.id === id);
+      return this.notes[index];
+    },
   },
 });

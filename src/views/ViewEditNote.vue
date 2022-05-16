@@ -1,5 +1,4 @@
 <template>
-  <div class="edit-note">Edit note {{ $route.params.id }}</div>
   <AddEditNote
     v-model="note.content"
     bgColor="link"
@@ -24,10 +23,11 @@
 
 <script setup>
 import { reactive } from "vue";
+import { useRoute } from "vue-router";
 import AddEditNote from "@/components/notes/AddEditNote.vue";
 import { useStoreNotes } from "@/stores/storeNotes";
-import { RouterLink } from "vue-router";
 
+const route = useRoute();
 const store = useStoreNotes();
-const note = reactive({ content: "" });
+const note = reactive({ ...store.getNote(route.params.id) });
 </script>
