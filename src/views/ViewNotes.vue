@@ -25,11 +25,11 @@
 </template>
 
 <script setup>
-import AddEditNote from "@/components/notes/AddEditNote.vue";
-import Note from "@/components/notes/Note.vue";
-
 import { ref, reactive } from "vue";
 import { useStoreNotes } from "@/stores/storeNotes";
+import AddEditNote from "@/components/notes/AddEditNote.vue";
+import Note from "@/components/notes/Note.vue";
+import { useWatchCharacters } from "@/use/useWatchCharacters";
 
 const store = useStoreNotes();
 const newNote = reactive({ content: "" });
@@ -44,4 +44,6 @@ const addNote = () => {
 const deleteNote = (id) => {
   store.deleteNote(id);
 };
+
+useWatchCharacters(newNote, 20);
 </script>
