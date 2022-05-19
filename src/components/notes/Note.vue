@@ -16,12 +16,18 @@
         >Delete</a
       >
     </footer>
+    <ModalDeleteNote
+      v-if="modals.deleteNote"
+      v-model="modals.deleteNote"
+      :note="note"
+    />
   </div>
 </template>
 
 <script setup>
-import { computed, defineEmits } from "vue";
+import { computed, reactive, defineEmits } from "vue";
 import { RouterLink } from "vue-router";
+import ModalDeleteNote from "@/components/notes/ModalDeleteNote.vue";
 
 const props = defineProps({
   note: {
@@ -37,7 +43,12 @@ const characterLength = computed(() => {
   return length > 1 ? `${length} characters` : `${length} character`;
 });
 
+const modals = reactive({
+  deleteNote: false,
+});
+
 const handleDeleteClicked = () => {
-  emit("deleteClicked", props.note.id);
+  modals.deleteNote = true;
+  //emit("deleteClicked", props.note.id);
 };
 </script>
